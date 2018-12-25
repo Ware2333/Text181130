@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trade.ck181130.addinfo.mapper.AddInfoMapper">
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap"
+		type="com.trade.ck181130.addinfo.model.AddInfoModel">
+		<result column="id" property="id" />
+		<result column="username" property="username" />
+		<result column="usercode" property="usercode" />
+		<result column="usertel" property="usertel" />
+		<result column="addr1" property="addr1" />
+		<result column="addr2" property="addr2" />
+		<result column="addr3" property="addr3" />
+		<result column="addr4" property="addr4" />
+		<result column="addr1name" property="addr1name" />
+		<result column="addr2name" property="addr2name" />
+		<result column="addr3name" property="addr3name" />
+	</resultMap>
+	<!-- table all fields sql片段 -->
+	<sql id="Base_Column_List">
+		id, usercode,username, usertel,addr1,addr2,addr3,addr4
+		,(select name from shopping_mal_ckl.address where code=addr1)addr1name
+		,(select name from shopping_mal_ckl.address where code=addr2)addr2name
+		,(select name from shopping_mal_ckl.address where code=addr3)addr3name
+	</sql>
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="username != null and username != ''">
+			and username like #{username}
+		</if>
+		<if test="usercode !=null and usercode !=''">
+			and usercode = #{usercode}
+		</if>
+		<if test="usertel != null and usertel != ''">
+			and usertel = #{usertel}
+		</if>
+		<if test="addr1 !=null and addr1 !=''">
+			and addr1 = #{addr1}
+		</if>
+		<if test="addr2 != null and addr2 != ''">
+			and addr2 = #{addr2}
+		</if>
+		<if test="addr3 != null and addr3 != ''">
+			and addr3 = #{addr3}
+		</if>
+		<if test="addr4 != null and addr4 != ''">
+			and addr4 = #{addr4}
+		</if>
+		<if test="addr1name !=null and addr1name !=''">
+			and addr1name = #{addr1name}
+		</if>
+		<if test="addr2name != null and addr2name != ''">
+			and addr2name = #{addr2name}
+		</if>
+		<if test="addr3name != null and addr3name != ''">
+			and addr3name = #{addr3name}
+		</if>
+	</sql>
+	<insert id="insert" parameterType="Object">
+		insert into
+		shopping_mal_ckl.addr_info(usercode,username,usertel,addr1,addr2,addr3,addr4)
+		values(#{usercode},#{username},#{usertel},#{addr1},#{addr2},#{addr3},#{addr4})
+	</insert>
+	<update id="update" parameterType="Object">
+		update shopping_mal_ckl.addr_info set
+		<trim suffixOverrides=",">
+			<if test="username != null and username != '' ">
+				username = #{username},
+			</if>
+			<if test="usertel != null and usertel != '' ">
+				usertel = #{usertel},
+			</if>
+			<if test="addr1 != null and addr1 != '' ">
+				addr1 = #{addr1},
+			</if>
+			<if test="addr2 != null and addr2 != '' ">
+				addr2 = #{addr2},
+			</if>
+			<if test="addr3 != null and addr3 != '' ">
+				addr3 = #{addr3},
+			</if>
+			<if test="addr4 != null and addr4 != '' ">
+				addr4 = #{addr4},
+			</if>
+			
+		</trim>
+		where id = #{id}
+	</update>
+	<update id="updateModel" parameterType="Object">
+		update shopping_mal_ckl.addr_info set
+		<trim suffixOverrides=",">
+			<if test="username != null and username != '' ">
+				username = #{username},
+			</if>
+			<if test="usertel != null and usertel != '' ">
+				usertel = #{usertel},
+			</if>
+			<if test="addr1 != null and addr1 != '' ">
+				addr1 = #{addr1},
+			</if>
+			<if test="addr2 != null and addr2 != '' ">
+				addr2 = #{addr2},
+			</if>
+			<if test="addr3 != null and addr3 != '' ">
+				addr3 = #{addr3},
+			</if>
+			<if test="addr4 != null and addr4 != '' ">
+				addr4 = #{addr4},
+			</if>
+		</trim>
+		where usercode = #{usercode}
+	</update>
+	<delete id="delete" parameterType="Object">
+		delete from shopping_mal_ckl.addr_info where id = #{id}
+	</delete>
+	<delete id="deleteModel" parameterType="Object">
+		delete from shopping_mal_ckl.addr_info where usercode = #{usercode}
+	</delete>
+	<select id="selectId" resultMap="BaseResultMap" parameterType="Object">
+		select id from shopping_mal_ckl.addr_info where usercode=#{usercode}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from shopping_mal_ckl.addr_info
+		<include refid="Example_Where_Clause" />
+	</select>
+	<select id="selectAllModel" resultMap="BaseResultMap"
+		parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from shopping_mal_ckl.addr_info
+		<include refid="Example_Where_Clause" />
+	</select>
+	<select id="selectModel" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from shopping_mal_ckl.addr_info
+		<include refid="Example_Where_Clause" /> 
+		limit ${rowStart},${pageLimit}
+	</select>
+	<select id="selectCount" resultType="int" parameterType="Object">
+	select count(1) from shopping_mal_ckl.addr_info 
+	<include refid="Example_Where_Clause"></include>
+	</select>
+</mapper>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trade.ck181130.commodity.mapper.Commodity_Information">
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap"
+		type="com.trade.ck181130.commodity.model.Commodity_InformationModel">
+		<result column="id" property="id" />
+		<result column="commodity_code" property="commodity_code" />
+		<result column="commodity_name" property="commodity_name" />
+		<result column="commodity_price" property="commodity_price" />
+		<result column="commodity_note" property="commodity_note" />
+		<result column="commodity_num" property="commodity_num" />
+		<result column="commodity_descr" property="commodity_descr" />
+		<result column="name" property="name" />
+		<result column="parentcode" property="parentcode" />
+		<result column="commodity_parentcode" property="commodity_parentcode" />
+		<result column="commodity_img" property="commodity_img" />
+	</resultMap>
+	<!-- table all fields sql片段 -->
+	<sql id="Base_Column_List">
+		id, c.commodity_code,c.commodity_name, c.commodity_price,c.commodity_note,c.commodity_num,c.commodity_descr,c.commodity_parentcode
+		,(select a.parentcode from shopping_mal_ckl.commodity_classification as a where a.code=c.commodity_parentcode)parentcode
+		,(select b.name from shopping_mal_ckl.commodity_classification as b where b.code=c.commodity_parentcode)name
+		,(select d.img_url from shopping_mal_ckl.commodity_img as d where d.commodity_code=c.commodity_code and d.img_type=1)commodity_img
+	</sql>
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="commodity_code != null and commodity_code != ''">
+			and commodity_code like #{commodity_code}
+		</if>
+		<if test="commodity_name !=null and commodity_name !=''">
+			and commodity_name like #{commodity_name}
+		</if>
+		<if test="commodity_price != null and commodity_price != ''">
+			and commodity_price = #{commodity_price}
+		</if>
+		<if test="commodity_note !=null and commodity_note !=''">
+			and commodity_note = #{commodity_note}
+		</if>
+		<if test="commodity_num != null and commodity_num != ''">
+			and commodity_num = #{commodity_num}
+		</if>
+		<if test="commodity_descr != null and commodity_descr != ''">
+			and commodity_descr = #{commodity_descr}
+		</if>
+		<if test="commodity_parentcode != null and commodity_parentcode != ''">
+			and commodity_parentcode = #{commodity_parentcode}
+		</if>
+	</sql>
+	<insert id="insert" parameterType="Object">
+		insert into
+		shopping_mal_ckl.commodity_information(commodity_code,commodity_name, commodity_price,commodity_note,commodity_num,commodity_descr,commodity_parentcode)
+		values(#{commodity_code},#{commodity_name},#{commodity_price},#{commodity_note},#{commodity_num},#{commodity_descr},#{commodity_parentcode})
+	</insert>
+	<update id="update" parameterType="Object">
+		update shopping_mal_ckl.commodity_information set
+		<trim suffixOverrides=",">
+			<if test="commodity_name != null and commodity_name != '' ">
+				commodity_name = #{commodity_name},
+			</if>
+			<if test="commodity_price != null and commodity_price != '' ">
+				commodity_price = #{commodity_price},
+			</if>
+			<if test="commodity_note != null and commodity_note != '' ">
+				commodity_note = #{commodity_note},
+			</if>
+			<if test="commodity_num != null and commodity_num != '' ">
+				commodity_num = #{commodity_num},
+			</if>
+			<if test="commodity_descr != null and commodity_descr != '' ">
+				commodity_descr = #{commodity_descr},
+			</if>
+			<if test="commodity_parentcode != null and commodity_parentcode != '' ">
+				commodity_parentcode = #{commodity_parentcode},
+			</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<update id="updateModel" parameterType="Object">
+		update shopping_mal_ckl.commodity_information set
+		<trim suffixOverrides=",">
+			<if test="commodity_name != null and commodity_name != '' ">
+				commodity_name = #{commodity_name},
+			</if>
+			<if test="commodity_price != null and commodity_price != '' ">
+				commodity_price = #{commodity_price},
+			</if>
+			<if test="commodity_note != null and commodity_note != '' ">
+				commodity_note = #{commodity_note},
+			</if>
+			<if test="commodity_num != null and commodity_num != '' ">
+				commodity_num = #{commodity_num},
+			</if>
+			<if test="commodity_descr != null and commodity_descr != '' ">
+				commodity_descr = #{commodity_descr},
+			</if>
+			<if test="commodity_parentcode != null and commodity_parentcode != '' ">
+				commodity_parentcode = #{commodity_parentcode},
+			</if>
+		</trim>
+		where commodity_code = #{commodity_code}
+	</update>
+	<delete id="delete" parameterType="Object">
+		delete from shopping_mal_ckl.commodity_information where id = #{id}
+	</delete>
+	<delete id="deleteModel" parameterType="Object">
+		delete from shopping_mal_ckl.commodity_information where commodity_code = #{commodity_code}
+	</delete>
+	<select id="selectId" resultMap="BaseResultMap" parameterType="Object">
+		select id from shopping_mal_ckl.commodity_information where commodity_code=#{commodity_code}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from shopping_mal_ckl.commodity_information as c
+		<include refid="Example_Where_Clause" />
+		 order by commodity_num
+	</select>
+	<select id="selectAllModel" resultMap="BaseResultMap"
+		parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from shopping_mal_ckl.commodity_information as c
+		<include refid="Example_Where_Clause" />
+		 order by commodity_num
+	</select>
+	<select id="selectModel" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from shopping_mal_ckl.commodity_information as c
+		<include refid="Example_Where_Clause" /> 
+		limit ${rowStart},${pageLimit}
+	</select>
+	<select id="selectCount" resultType="int" parameterType="Object">
+	select count(1) from shopping_mal_ckl.commodity_information 
+	<include refid="Example_Where_Clause"></include>
+	</select>
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trade.ck181130.receivingaddress.mapper.ReceivingAddressMapper">
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.trade.ck181130.receivingaddress.model.ReceivingAddressModel">
+		<result column="id" property="id" />
+		<result column="username" property="name" />
+		<result column="password" property="password" />
+	</resultMap>
+
+	<!-- table all fields sql片段 -->
+	<sql id="Base_Column_List">
+		id, username, password
+	</sql>
+
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="name != null and name != ''">
+			and username = #{name}
+		</if>
+		<if test="password != null and password != ''">
+			and password = #{pass}
+		</if>
+	</sql>
+
+	<insert id="insert" parameterType="Object">
+		insert into new_user.user(username,password)
+		values(#{name},#{password})
+	</insert>
+
+	<delete id="delete" parameterType="Object">
+		delete from new_user.user where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="Object">
+		update new_user.user set
+		<trim suffixOverrides=",">
+			<if test="name != null and name != '' ">
+				username = #{name},
+			</if>
+			<if test="password != null and password != '' ">
+				password = #{password},
+			</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<select id="selectAll" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from new_user.user
+		<include refid="Example_Where_Clause" />
+	</select>
+</mapper>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trade.ck181130.shoppingcart.mapper.ShoppingCartMapper">
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap"
+		type="com.trade.ck181130.shoppingcart.model.ShoppingCartModel">
+		<result column="id" property="id" />
+		<result column="usercode" property="usercode" />
+		<result column="commodity_code" property="commodity_code" />
+		<result column="num" property="num" />
+		<result column="name" property="name" />
+		<result column="commodity_num" property="commodity_num" />
+	</resultMap>
+	<!-- table all fields sql片段 -->
+	<sql id="Base_Column_List">
+		s.id, s.usercode,s.commodity_code, s.num
+		,(select c.commodity_name from shopping_mal_ckl.commodity_information as c where c.commodity_code = s.commodity_code)name
+		,(select x.commodity_price from shopping_mal_ckl.commodity_information as x where x.commodity_code = s.commodity_code)price
+		,(select u.img_url from shopping_mal_ckl.commodity_img as u where u.commodity_code = s.commodity_code and u.img_type = 1)img_url
+		,(select a.commodity_num from shopping_mal_ckl.commodity_information as a where a.commodity_code=s.commodity_code)commodity_num
+	</sql>
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<if test="id != null">
+			and s.id = #{id}
+		</if>
+		<if test="usercode != null and usercode != ''">
+			and s.usercode like #{usercode}
+		</if>
+		<if test="commodity_code !=null and commodity_code !=''">
+			and s.commodity_code = #{commodity_code}
+		</if>
+		<if test="num != null and num != ''">
+			and s.num = #{num}
+		</if>
+	</sql>
+	<insert id="insert" parameterType="Object">
+		insert into
+		shopping_mal_ckl.shopping_cart(usercode,commodity_code, num)
+		values(#{usercode},#{commodity_code},#{num})
+	</insert>
+	<update id="update" parameterType="Object">
+		update shopping_mal_ckl.shopping_cart set
+		<trim suffixOverrides=",">
+			<if test="usercode != null and usercode != ''">
+			and usercode = #{usercode}
+		</if>
+		<if test="commodity_code !=null and commodity_code !=''">
+			and commodity_code = #{commodity_code}
+		</if>
+		<if test="num != null and num != ''">
+			 num = #{num}
+		</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<update id="updateModel" parameterType="Object">
+		update shopping_mal_ckl.shopping_cart set 
+		<trim suffixOverrides=",">
+<!-- 			<if test="commodity_code !=null and commodity_code !=''"> -->
+			
+<!-- 		</if> -->
+		<if test="num != null and num != ''">
+			   num = #{num}
+		</if>
+		</trim>
+		where usercode = #{usercode} and commodity_code = #{commodity_code}
+	</update>
+	<delete id="delete" parameterType="Object">
+		delete from shopping_mal_ckl.shopping_cart where id = #{id}
+	</delete>
+	<delete id="deleteModel" parameterType="Object">
+		delete from shopping_mal_ckl.shopping_cart where usercode = #{usercode} 
+		<if test="commodity_code != null and commodity_code != ''">
+			and commodity_code = #{commodity_code}
+		</if>
+	</delete>
+	<select id="selectId" resultMap="BaseResultMap" parameterType="Object">
+		select id from shopping_mal_ckl.shopping_cart where usercode=#{usercode}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from shopping_mal_ckl.shopping_cart as s
+		<include refid="Example_Where_Clause" />
+	</select>
+	<select id="selectAllModel" resultMap="BaseResultMap"
+		parameterType="Object">
+	select
+		<include refid="Base_Column_List" />
+		from shopping_mal_ckl.shopping_cart as s
+		<include refid="Example_Where_Clause" />
+	</select>
+	<select id="selectModel" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from shopping_mal_ckl.shopping_cart as s
+		<include refid="Example_Where_Clause" /> 
+		limit ${rowStart},${pageLimit}
+	</select>
+	<select id="selectCount" resultType="int" parameterType="Object">
+	select count(1) from shopping_mal_ckl.shopping_cart  as s
+	<include refid="Example_Where_Clause"></include>
+	</select>
+</mapper>

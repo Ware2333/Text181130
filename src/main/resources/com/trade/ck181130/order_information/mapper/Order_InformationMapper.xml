@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trade.ck181130.order_information.mapper.Order_InformationMapper">
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap"
+		type="com.trade.ck181130.order_information.model.Order_InformationModel">
+		<result column="id" property="id" />
+		<result column="order_code" property="order_code" />
+		<result column="usercode" property="usercode" />
+		<result column="order_time" property="order_time" />
+		<result column="receiving" property="receiving" />
+		<result column="username" property="username" />
+		<result column="price" property="price" />
+		<result column="descr" property="descr" />
+		<result column="usertel" property="usertel" />
+		<result column="addr1name" property="addr1name" />
+		<result column="addr2name" property="addr2name" />
+		<result column="addr3name" property="addr3name" />
+		<result column="addr4name" property="addr4name" />
+	</resultMap>
+	<!-- table all fields sql片段 -->
+	<sql id="Base_Column_List">
+		c.id, c.order_code,c.usercode, c.order_time,c.receiving,c.descr,c.price
+		,(select u.username from shopping_mal_ckl.user as u where u.usercode=c.usercode)username
+		,(select d.name from shopping_mal_ckl.address as d where d.code=(select a.addr1 from shopping_mal_ckl.addr_info as a where a.id = c.receiving))addr1name
+		,(select e.name from shopping_mal_ckl.address as e where e.code=(select b.addr2 from shopping_mal_ckl.addr_info as b where b.id = c.receiving))addr2name
+		,(select f.name from shopping_mal_ckl.address as f where f.code=(select g.addr3 from shopping_mal_ckl.addr_info as g where g.id = c.receiving))addr3name
+		,(select z.addr4 from shopping_mal_ckl.addr_info as z where z.id = c.receiving)addr4name
+		,(select h.usertel from shopping_mal_ckl.addr_info as h where h.id = c.receiving)usertel
+	</sql>
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<if test="id != null">
+			and c.id = #{id}
+		</if>
+		<if test="order_code != null and order_code != ''">
+			and c.order_code like #{order_code}
+		</if>
+		<if test="usercode !=null and usercode !=''">
+			and c.usercode = #{usercode}
+		</if>
+		<if test="order_time != null and order_time != ''">
+			and c.order_time = #{order_time}
+		</if>
+		<if test="receiving !=null and receiving !=''">
+			and c.receiving = #{receiving}
+		</if>
+		<if test="descr != null and descr != ''">
+			and c.descr = #{descr}
+		</if>
+		<if test="price != null and price != ''">
+			and c.price = #{price}
+		</if>
+	</sql>
+	<insert id="insert" parameterType="Object">
+		insert into
+		shopping_mal_ckl.order_information(order_code,usercode, order_time,receiving,descr,price)
+		values(#{order_code},#{usercode},now(),#{receiving},#{descr},#{price})
+	</insert>
+	<update id="update" parameterType="Object">
+		update shopping_mal_ckl.order_information set
+		<trim suffixOverrides=",">
+		<if test="receiving !=null and receiving !=''">
+			and receiving = #{receiving}
+		</if>
+		<if test="descr != null and descr != ''">
+			and descr = #{descr}
+		</if>
+		<if test="price != null and price != ''">
+			and price = #{price}
+		</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<update id="updateModel" parameterType="Object">
+		update shopping_mal_ckl.order_information set
+		<trim suffixOverrides=",">
+		<if test="receiving !=null and receiving !=''">
+			and receiving = #{receiving}
+		</if>
+		<if test="descr != null and descr != ''">
+			and descr = #{descr}
+		</if>
+		<if test="price != null and price != ''">
+			and price = #{price}
+		</if>
+		</trim>
+		where order_code = #{order_code}
+	</update>
+	<delete id="delete" parameterType="Object">
+		delete from shopping_mal_ckl.order_information where id = #{id}
+	</delete>
+	<delete id="deleteModel" parameterType="Object">
+		delete from shopping_mal_ckl.order_information where order_code = #{order_code}
+	</delete>
+	<select id="selectId" resultMap="BaseResultMap" parameterType="Object">
+		select id from shopping_mal_ckl.order_information where order_code=#{order_code}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from shopping_mal_ckl.order_information as c
+		<include refid="Example_Where_Clause" />
+		order by id desc 
+		limit ${rowStart},${pageLimit}
+	</select>
+	<select id="selectAllModel" resultMap="BaseResultMap"
+		parameterType="Object">
+	select
+		<include refid="Base_Column_List" />
+		from shopping_mal_ckl.order_information as c
+		<include refid="Example_Where_Clause" />
+		order by id desc 
+		limit ${rowStart},${pageLimit}
+	</select>
+	<select id="selectModel" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from shopping_mal_ckl.order_information as c
+		<include refid="Example_Where_Clause" />
+		order by id desc 
+		limit ${rowStart},${pageLimit}
+	</select>
+	<select id="selectCount" resultType="int" parameterType="Object">
+	select count(1) from shopping_mal_ckl.order_information as c
+	<include refid="Example_Where_Clause"></include>
+	</select>
+</mapper>

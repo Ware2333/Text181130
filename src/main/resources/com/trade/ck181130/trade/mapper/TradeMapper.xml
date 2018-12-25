@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trade.ck181130.trade.mapper.TradeMapper">
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.trade.ck181130.trade.model.TradeModel">
+		<result column="id" property="id" />
+		<result column="trade_code" property="trade_code" />
+		<result column="trade_name" property="trade_name" />
+		<result column="trade_price" property="trade_price" />
+		<result column="trade_note" property="trade_note" />
+		<result column="trade_num" property="trade_num" />
+		<result column="trade_status" property="trade_status" />
+		<result column="trade_parentcode" property="trade_parentcode" />
+	</resultMap>
+
+	<!-- table all fields sql片段 -->
+	<sql id="Base_Column_List">
+		id, trade_code, trade_name,trade_price,trade_note,trade_num,trade_status,trade_parentcode
+	</sql>
+
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="trade_code != null and trade_code != ''">
+			and trade_code = #{trade_code}
+		</if>
+		<if test="trade_name != null and trade_name != ''">
+			and trade_name = #{trade_name}
+		</if>
+		<if test="trade_price != null and trade_price != ''">
+			and trade_price = #{trade_price}
+		</if>
+		<if test="trade_note != null and trade_note != ''">
+			and trade_note = #{trade_note}
+		</if>
+		<if test="trade_num != null and trade_num != ''">
+			and trade_num = #{trade_num}
+		</if>
+		<if test="trade_status != null and trade_status != ''">
+			and trade_status = #{trade_status}
+		</if>
+		<if test="trade_parentcode != null and trade_parentcode != ''">
+			and trade_parentcode = #{trade_parentcode}
+		</if>
+	</sql>
+
+	<insert id="insert" parameterType="Object">
+		insert into shopping_mal_ckl.commodity_information(trade_code, trade_name,trade_price,trade_note,trade_num,trade_status,trade_parentcode)
+		values(#{trade_code},#{trade_name},#{trade_price},#{trade_note},#{trade_note},#{trade_num},#{trade_status},#{trade_parentcode})
+	</insert>
+
+	<delete id="delete" parameterType="Object">
+		delete from shopping_mal_ckl.commodity_information where id = #{id}
+	</delete>
+	
+	<delete id="deleteModel" parameterType="Object">
+		delete from shopping_mal_ckl.commodity_information where trade_code = #{trade_code}
+	</delete>
+
+	<update id="update" parameterType="Object">
+		update shopping_mal_ckl.commodity_information set
+		<trim suffixOverrides=",">
+		<if test="trade_name != null and trade_name != ''">
+			and trade_name = #{trade_name}
+		</if>
+		<if test="trade_price != null and trade_price != ''">
+			and trade_price = #{trade_price}
+		</if>
+		<if test="trade_note != null and trade_note != ''">
+			and trade_note = #{trade_note}
+		</if>
+		<if test="trade_num != null and trade_num != ''">
+			and trade_num = #{trade_num}
+		</if>
+		<if test="trade_status != null and trade_status != ''">
+			and trade_status = #{trade_status}
+		</if>
+		</trim>
+		where id = #{id}
+	</update>
+	
+	<update id="updateTradeModel" parameterType="Object">
+		update shopping_mal_ckl.commodity_information set
+		<trim suffixOverrides=",">
+		<if test="trade_name != null and trade_name != ''">
+			and trade_name = #{trade_name}
+		</if>
+		<if test="trade_price != null and trade_price != ''">
+			and trade_price = #{trade_price}
+		</if>
+		<if test="trade_note != null and trade_note != ''">
+			and trade_note = #{trade_note}
+		</if>
+		<if test="trade_num != null and trade_num != ''">
+			and trade_num = #{trade_num}
+		</if>
+		<if test="trade_status != null and trade_status != ''">
+			and trade_status = #{trade_status}
+		</if>
+		</trim>
+		where trade_code = #{trade_code}
+	</update>
+	
+	<select id="selectId" resultMap="BaseResultMap" parameterType="Object">
+		select id from shopping_mal_ckl.commodity_information where trade_code=#{trade_code}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from shopping_mal_ckl.commodity_information
+		<include refid="Example_Where_Clause" />
+	</select>
+	<select id="selectModel" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from shopping_mal_ckl.commodity_information
+		<include refid="Example_Where_Clause" />
+		limit ${rowStart},${pageLimit} 
+	</select>
+	<select id="selectCount" resultType="int" parameterType="Object">
+	select count(1) from shopping_mal_ckl.commodity_information where 1=1 
+	<include refid="Example_Where_Clause" />
+	</select>
+</mapper>

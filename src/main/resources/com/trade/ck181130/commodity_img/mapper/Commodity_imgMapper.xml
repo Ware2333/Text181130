@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trade.ck181130.commcodity_img.mapper.Commodity_imgMapper">
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap"
+		type="com.trade.ck181130.commcodity_img.model.Commodity_imgModel">
+		<result column="id" property="id" />
+		<result column="commodity_code" property="commodity_code" />
+		<result column="name" property="name" />
+		<result column="img_url" property="img_url" />
+		<result column="img_type" property="img_type" />
+	</resultMap>
+	<!-- table all fields sql片段 -->
+	<sql id="Base_Column_List">
+		id, commodity_code,img_url, img_type
+		,(select commodity_name from shopping_mal_ckl.commodity_information where commodity_code=#{commodity_code})name
+	</sql>
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="commodity_code != null and commodity_code != ''">
+			and commodity_code like #{commodity_code}
+		</if>
+		<if test="img_url !=null and img_url !=''">
+			and img_url = #{img_url}
+		</if>
+		<if test="img_type != null and img_type != ''">
+			and img_type = #{img_type}
+		</if>
+	</sql>
+	<insert id="insert" parameterType="Object">
+		insert into
+		shopping_mal_ckl.commodity_img(commodity_code,img_url, img_type)
+		values(#{commodity_code},#{img_url},#{img_type})
+	</insert>
+	<update id="update" parameterType="Object">
+		update shopping_mal_ckl.commodity_img set
+		<trim suffixOverrides=",">
+			<if test="img_url != null and img_url != '' ">
+				img_url = #{img_url},
+			</if>
+			<if test="img_type != null and img_type != '' ">
+				img_type = #{img_type},
+			</if>
+		</trim>
+		where id = #{id}
+	</update>
+	<update id="updateModel" parameterType="Object">
+		update shopping_mal_ckl.commodity_img set
+		<trim suffixOverrides=",">
+			<if test="img_type != null and img_type != '' ">
+				img_type = #{img_type},
+			</if>
+		</trim>
+		where commodity_code = #{commodity_code}
+		<trim suffixOverrides=",">
+		<if test="img_url != null and img_url != '' ">
+				and img_url = #{img_url}
+			</if>
+			<if test="img_type2 != null and img_type2 != '' ">
+				and img_type = #{img_type2}
+			</if>
+		</trim>
+
+	</update>
+	<delete id="delete" parameterType="Object">
+		delete from shopping_mal_ckl.commodity_img where id = #{id}
+	</delete>
+	<delete id="deleteModel" parameterType="Object">
+		delete from shopping_mal_ckl.commodity_img where img_url = #{img_url}
+	</delete>
+	<select id="selectId" resultMap="BaseResultMap" parameterType="Object">
+		select id from shopping_mal_ckl.commodity_img where commodity_code=#{commodity_code}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from shopping_mal_ckl.commodity_img 
+		<include refid="Example_Where_Clause" />
+		order by img_type 
+	</select>
+	<select id="selectAllModel" resultMap="BaseResultMap"
+		parameterType="Object">
+	select
+		<include refid="Base_Column_List" />
+		from shopping_mal_ckl.commodity_img 
+		<include refid="Example_Where_Clause" />
+		order by img_type 
+	</select>
+	<select id="selectModel" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from shopping_mal_ckl.commodity_img
+		<include refid="Example_Where_Clause" /> 
+		limit ${rowStart},${pageLimit}
+	</select>
+	<select id="selectCount" resultType="int" parameterType="Object">
+	select count(1) from shopping_mal_ckl.commodity_img 
+	<include refid="Example_Where_Clause"></include>
+	</select>
+</mapper>
