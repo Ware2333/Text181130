@@ -64,7 +64,6 @@ function reg(){
 			dataType : "text",
 			type : "post",
 			success : function(data) {
-				console.log(data)
 				if (data == "success") {
 					window.location.href=con.net+"/web/page/Index/index.jsp"
 				}else if(data == "err"){

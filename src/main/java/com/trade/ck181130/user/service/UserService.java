@@ -27,13 +27,13 @@ public class UserService extends ServiceUtil<UserModel> {
 	 * 验证账号密码是否正确,是否为管理员
 	 **/
 	@Override
-	public MapperUtil<UserModel> getmapper() {
+	public UserMapper<UserModel> getmapper() {
 		return usermapper;
 	}
 
 	public String login(UserModel usermodel, HttpSession session) {
 		usermodel.setPassword(MD5.mmd(usermodel.getPassword()));
-		List<UserModel> list = usermapper.selectAll(usermodel);
+		List<UserModel> list = getmapper().selectAll(usermodel);
 		if (!IsEmpty.isEmpty(list)) {
 			if (!IsEmpty.isempty(list.get(0).getAdmin())) {
 				session.setAttribute("user", list.get(0).getUsername());

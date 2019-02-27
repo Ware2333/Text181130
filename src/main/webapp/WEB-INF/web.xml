@@ -32,10 +32,6 @@
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>LoginFilter</filter-name>
-		<url-pattern>/web/register.jsp</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>LoginFilter</filter-name>
 		<url-pattern>/web/reset.jsp</url-pattern>
 	</filter-mapping>
 
@@ -75,7 +71,6 @@
       <param-value>25</param-value>
     </init-param>
 	</servlet>
-  
 	<servlet-mapping>
 		<servlet-name>spring-servlet</servlet-name>
 		<url-pattern>*.do</url-pattern>
