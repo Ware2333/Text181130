@@ -8,6 +8,7 @@ import java.util.Map;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.trade.ck181130.commodity.mapper.Commodity_Information;
 import com.trade.ck181130.commodity.model.Commodity_InformationModel;
@@ -44,6 +45,7 @@ public class ShoppingCartService extends ServiceUtil<ShoppingCartModel>{
 		return new JSONObject(map).toString();
 	}
 	
+	@Transactional(rollbackFor = Exception.class)
 	public String insert(ShoppingCartModel model) {
 		ShoppingCartModel no = new ShoppingCartModel();
 		no.setCommodity_code(model.getCommodity_code());
@@ -69,6 +71,7 @@ public class ShoppingCartService extends ServiceUtil<ShoppingCartModel>{
 		return new JSONObject(map).toString();
 	}
 	
+	@Transactional(rollbackFor = Exception.class)
 	public String del(String[] id) {
 		int a = 0;
 		for(String ss : id) {

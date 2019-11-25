@@ -7,6 +7,7 @@ import java.util.Map;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.trade.ck181130.order.mapper.Order_CommodityMapper;
 import com.trade.ck181130.order.model.Order_CommodityModel;
@@ -24,6 +25,7 @@ public class Order_CommodityService extends ServiceUtil<Order_CommodityModel> {
 		return mapper;
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	public String insert(Order_CommodityModel model) {
 		Order_CommodityModel ni = new Order_CommodityModel();
 		ni.setCommodity_code(model.getCommodity_code());
@@ -37,6 +39,7 @@ public class Order_CommodityService extends ServiceUtil<Order_CommodityModel> {
 		}
 	}
 	
+	@Transactional(rollbackFor = Exception.class)
 	public String order_insert(String order_code,String[] commodity_code,String[] num) {
 		int a = 0;
 		for(int i = 0;i<commodity_code.length;i++) {

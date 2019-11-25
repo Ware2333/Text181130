@@ -6,6 +6,7 @@ import java.util.Map;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.trade.ck181130.order_information.mapper.Order_InformationMapper;
 import com.trade.ck181130.order_information.model.Order_InformationModel;
@@ -23,6 +24,7 @@ public class Order_InformationService extends ServiceUtil<Order_InformationModel
 		return mapper;
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	public String insert(Order_InformationModel model) {
 		model.setOrder_code(Uuid.getUUID());
 		model.setDescr("1");

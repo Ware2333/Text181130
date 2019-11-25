@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.trade.ck181130.commodity.mapper.Commodity_Information;
 import com.trade.ck181130.commodity.model.Commodity_InformationModel;
@@ -50,6 +51,7 @@ public class Commodity_InformationService extends ServiceUtil<Commodity_Informat
 		return new JSONObject(map).toString();
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	public String insert(Commodity_InformationModel commoditymodel) {
 		Commodity_InformationModel ni = new Commodity_InformationModel();
 		ni.setCommodity_code(commoditymodel.getCommodity_code());
